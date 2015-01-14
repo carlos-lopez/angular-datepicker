@@ -110,7 +110,7 @@
         $scope.day = Number($filter('date')(date, 'dd')); //01-31 like
         $scope.year = Number($filter('date')(date, 'yyyy'));//2014 like
         $scope.months = datetime.MONTH;
-        $scope.daysInString = ['0', '1', '2', '3', '4', '5', '6'].map(function mappingFunc(el) {
+        $scope.daysInString = ['1', '2', '3', '4', '5', '6', '0'].map(function mappingFunc(el) {
 
           return $filter('date')(new Date(new Date('06/08/2014').valueOf() + A_DAY_IN_MILLISECONDS * el), 'EEE');
         });
@@ -335,6 +335,9 @@
             , howManyPreviousDays
             , monthAlias;
 
+          firstDayMonthNumber = ( firstDayMonthNumber - 1 ) % 7;
+          lastDayMonthNumber = ( lastDayMonthNumber - 1 ) % 7;
+
           $scope.days = [];
 
           for (i = 1; i <= limitDate; i += 1) {
@@ -365,9 +368,12 @@
             //no need for it
             $scope.prevMonthDays = [];
           }
+          if($scope.prevMonthDays.length > 6){
+            $scope.prevMonthDays = [];
+          }
 
           //get next month days is first day in month is not Sunday
-          if (lastDayMonthNumber < 6) {
+          if (lastDayMonthNumber !== 0) {
 
             howManyNextDays = 6 - lastDayMonthNumber;
             //get previous month
@@ -381,6 +387,9 @@
             $scope.nextMonthDays = nextMonthDays;
           } else {
             //no need for it
+            $scope.nextMonthDays = [];
+          }
+          if($scope.nextMonthDays.length > 6){
             $scope.nextMonthDays = [];
           }
         };
