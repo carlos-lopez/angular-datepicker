@@ -291,10 +291,13 @@
             var modelDate = new Date($scope.year + '/' + $scope.monthNumber + '/' + $scope.day);
 
             if (attr.dateFormat) {
-
-              thisInput.val($filter('date')(modelDate, dateFormat));
+              if (attr.dateFormat === 'timestamp') {
+                modelDate = modelDate.valueOf();
+                thisInput.val(modelDate);
+              } else {
+                thisInput.val($filter('date')(modelDate, dateFormat));
+              }
             } else {
-
               thisInput.val(modelDate);
             }
 
